@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './modules/app.module';
 import { ConfigService } from '@nestjs/config';
-import { NestInterceptor, VersioningType } from '@nestjs/common';
+import { Logger, NestInterceptor, VersioningType } from '@nestjs/common';
 import { GlobalExceptionFilter } from './filter/http-exception.filter';
 import {
   GlobalInterceptor,
@@ -18,18 +18,21 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const configService = app.get(ConfigService);
 
-  const document = () =>
-    SwaggerModule.createDocument(
-      app,
-      swaggerConfig(configService.get('PORT') ?? 3000),
-      {
-        ignoreGlobalPrefix: true,
-      },
-    );
+  if (process.env.NODE_ENV !== 'production') {
+    const document = () =>
+      SwaggerModule.createDocument(
+        app,
+        swaggerConfig(configService.get('PORT') ?? 3000),
+        {
+          ignoreGlobalPrefix: true,
+        },
+      );
 
-  SwaggerModule.setup('api', app, document, {
-    explorer: true,
-  });
+    SwaggerModule.setup('api-docs', app, document, {
+      explorer: true,
+    });
+    Logger.log('Swagger documentation available at /api-docs');
+  }
 
   // Set a global prefix for all routes, e.g., /api/v1/users
   app.setGlobalPrefix('api', {

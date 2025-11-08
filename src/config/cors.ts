@@ -1,8 +1,9 @@
-import { corsDomains } from './allow-domain';
+import { allowedDomains } from './allow-domain';
 
 export const corsConfig = {
-  origin: corsDomains,
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  preflightContinue: false,
-  optionsSuccessStatus: 204,
+  origin: process.env.NODE_ENV === 'production' ? allowedDomains : true, // Allow all in development
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  exposedHeaders: ['Content-Type', 'X-Request-ID'],
 };
