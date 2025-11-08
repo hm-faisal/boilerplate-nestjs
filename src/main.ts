@@ -1,5 +1,5 @@
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './modules/app.module';
+import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
 import { Logger, NestInterceptor, VersioningType } from '@nestjs/common';
 import { GlobalExceptionFilter } from './filter/http-exception.filter';
@@ -68,4 +68,4 @@ async function bootstrap() {
 
   await app.listen(configService.get('PORT') ?? 3000);
 }
-bootstrap();
+void bootstrap();

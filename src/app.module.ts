@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
-import { HealthModule } from './health/health.module';
-import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
-import configuration from '../config/configuration';
+import configuration from './config/configuration';
 import { ThrottlerModule } from '@nestjs/throttler';
-import { ResultsModule } from './results/results.module';
+import { HealthModule } from './modules/health/health.module';
+import { AuthModule } from './modules/auth/auth.module';
+import { PrismaModule } from './common/prisma/prisma.module';
 
 @Module({
   imports: [
@@ -27,7 +27,7 @@ import { ResultsModule } from './results/results.module';
     // api modules
     HealthModule,
     AuthModule,
-    ResultsModule,
+    PrismaModule,
   ],
 })
 export class AppModule {}
